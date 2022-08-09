@@ -1,0 +1,39 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: no
+      dhcp6: no
+      addresses: [{{ ansible_eth0.ipv4.address }}/24]
+      routes: 
+        {% for network in  local_nets %}- to: {{ network }}
+          via: 192.168.200.1
+          on-link: true 
+        {% endfor %}          
+      nameservers:
+        addresses: 
+          - 192.168.200.3
+          - 192.168.1.40
+          - 192.168.1.41
+        search: 
+          - cons.tsk.ru
+
+
+    eth1:
+      dhcp4: no
+      dhcp6: no
+      addresses: [{{ ansible_eth1.ipv4.address }}/26]
+      routes:
+      - to: default
+        via: 91.211.184.194
+      nameservers:
+        addresses: 
+          - 91.211.184.1
+          - 91.211.187.1
+        search:
+          - tsk.ru
+
+
+
+

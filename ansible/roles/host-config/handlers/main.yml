@@ -1,0 +1,14 @@
+---
+- name: daemon reload
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: run Timedatectl
+  command: timedatectl set-ntp true
+
+- name: start Timedatectl
+  ansible.builtin.systemd:
+    name: systemd-timesyncd
+    enabled: yes
+    state: restarted
+

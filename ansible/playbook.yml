@@ -1,0 +1,7 @@
+---
+- hosts: git-server
+  roles:
+    - network-config
+    - host-config
+    - gitlab
+    

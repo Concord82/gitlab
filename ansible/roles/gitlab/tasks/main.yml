@@ -1,0 +1,39 @@
+---
+- name: Install and configure the necessary dependencies 
+  ansible.builtin.apt:
+    name:
+      - curl 
+      - openssh-server 
+      - ca-certificates 
+      - tzdata 
+      - perl
+      - gnupg 
+      - apt-transport-https
+    state: present
+    update_cache: yes
+
+- name: install the GPG key that used to sign repository metadata.
+  ansible.builtin.apt_key:
+    url: https://packages.gitlab.com/gitlab/gitlab-ee/gpgkey
+    state: present
+
+- name: Create a file repo
+  ansible.builtin.apt_repository:
+    repo: "{{ item }}"
+    state: present
+    filename: gitlab
+  loop:
+    - "deb https://packages.gitlab.com/gitlab/gitlab-ee/ubuntu/ focal main"
+    - "deb-src https://packages.gitlab.com/gitlab/gitlab-ee/ubuntu/ focal main"
+
+- name: Update cache packages
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 86400
+
+- name:  install the package 
+  ansible.builtin.apt:
+    name: gitlab-ee
+    state: present
+  environment:
+    EXTERNAL_URL: "http://git.cons.tsk.ru"
