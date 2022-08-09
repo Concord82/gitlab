@@ -1,0 +1,4 @@
+proxmox_ip = "192.168.90.6"
+
+api_token_id = "root@pam!root_api_token"
+api_token_secret = "api token insert please"
